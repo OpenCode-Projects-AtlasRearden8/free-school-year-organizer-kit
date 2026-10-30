@@ -1,0 +1,185 @@
+/* Shared print stylesheet for the Free School Year Organizer Kit.
+   Designed for US Letter, printed single-sided, black & white friendly. */
+
+:root {
+  --ink: #1a1a1a;
+  --soft: #4a4a4a;
+  --line: #333;
+  --faint: #9a9a9a;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Georgia", "Times New Roman", serif;
+  color: var(--ink);
+  font-size: 10.5pt;
+  line-height: 1.45;
+  padding: 0.45in 0.5in;
+}
+
+/* ---------- header ---------- */
+.sheet-title {
+  font-size: 19pt;
+  font-weight: bold;
+  letter-spacing: 0.3px;
+}
+
+.sheet-subtitle {
+  color: var(--soft);
+  font-size: 10.5pt;
+  font-style: italic;
+  margin-top: 2px;
+}
+
+.sheet-kicker {
+  font-family: "Helvetica", "Arial", sans-serif;
+  font-size: 8.5pt;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--soft);
+  margin-bottom: 3px;
+}
+
+.masthead {
+  border-bottom: 2.5px solid var(--line);
+  padding-bottom: 7px;
+  margin-bottom: 12px;
+}
+
+/* ---------- parent guide box ---------- */
+.guide {
+  background: #f2f2f2;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  padding: 9px 12px;
+  margin-bottom: 14px;
+  page-break-inside: avoid;
+}
+
+.guide-title {
+  font-family: "Helvetica", "Arial", sans-serif;
+  font-size: 9pt;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 3px;
+}
+
+.guide p {
+  font-size: 9.5pt;
+  line-height: 1.5;
+}
+
+.guide :last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- generic form bits ---------- */
+.wc {
+  display: inline-block;
+  border-bottom: 1px solid var(--line);
+  min-height: 15px;
+}
+
+.wc-long {
+  display: block;
+  border-bottom: 1px solid var(--line);
+  min-height: 16px;
+  margin-top: 9px;
+}
+
+.cb {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 1.4px solid var(--line);
+  border-radius: 2px;
+  vertical-align: -2px;
+  margin-right: 7px;
+}
+
+ul.checklist {
+  list-style: none;
+}
+
+ul.checklist li {
+  padding: 5.5px 0;
+  border-bottom: 1px dotted #ccc;
+}
+
+.field-row {
+  margin-bottom: 10px;
+}
+
+.label {
+  font-family: "Helvetica", "Arial", sans-serif;
+  font-size: 8pt;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--soft);
+}
+
+/* ---------- tables ---------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 9.5pt;
+}
+
+th {
+  font-family: "Helvetica", "Arial", sans-serif;
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  text-align: left;
+  border-bottom: 2px solid var(--line);
+  padding: 4px 6px;
+}
+
+td {
+  border-bottom: 1px solid #bbb;
+  padding: 9px 6px;
+}
+
+td.strong {
+  font-weight: bold;
+}
+
+td.center {
+  text-align: center;
+}
+
+/* ---------- tracker-style sheets used with a bindable clipboard ---------- */
+.talk-table td {
+  padding-top: 11px;
+  padding-bottom: 11px;
+}
+
+/* ---------- footer ---------- */
+.footnote {
+  margin-top: 14px;
+  padding-top: 6px;
+  border-top: 1px solid #ccc;
+  font-size: 8pt;
+  color: var(--faint);
+}
+
+.page-break {
+  page-break-before: always;
+}
+
+@page {
+  size: Letter;
+  margin: 0;
+}
+
+/* keep honest page breaks; two-page sheets get their own spacer */
+.spacer {
+  display: inline-block;
+}
