@@ -85,6 +85,23 @@ class TestBuild(unittest.TestCase):
                 )
             self.assertEqual(problems, [], "PDF verification reported problems")
 
+    def test_builds_are_byte_reproducible(self):
+        import hashlib
+
+        with tempfile.TemporaryDirectory() as tmp1, tempfile.TemporaryDirectory() as tmp2:
+            self.run_build(tmp1)
+            self.run_build(tmp2)
+            for stem in verify_pdfs.EXPECTED_SHEETS:
+                h1 = hashlib.md5(
+                    (pathlib.Path(tmp1) / f"{stem}.pdf").read_bytes()
+                ).hexdigest()
+                h2 = hashlib.md5(
+                    (pathlib.Path(tmp2) / f"{stem}.pdf").read_bytes()
+                ).hexdigest()
+                self.assertEqual(
+                    h1, h2, f"{stem}: rebuild is not byte-identical to the previous run"
+                )
+
     @staticmethod
     def run_build(out_dir: str) -> subprocess.CompletedProcess:
         return subprocess.run(

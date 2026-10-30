@@ -13,6 +13,7 @@ Requirements: WeasyPrint (pip install weasyprint). Verified with WeasyPrint 70.
 """
 
 import argparse
+import io
 import pathlib
 import sys
 
@@ -25,6 +26,42 @@ except ImportError as exc:
         f"(Details: {exc})\n"
     )
     sys.exit(1)
+
+
+def _make_fonts_deterministic():
+    """Pin subset-font dates so repeated builds produce identical PDFs.
+
+    WeasyPrint subsets embedded fonts via HarfBuzz or fontTools, and both can
+    stamp the current time (or reorder tables) into the font's `head` on each
+    run. We therefore force the fontTools path and recompile each subset font
+    with a fixed date and checksum. Glyphs, text, and layout are untouched,
+    but repeated builds produce byte-identical PDFs.
+    """
+    from fontTools.ttLib import TTFont
+
+    import weasyprint.pdf.fonts as wpfonts
+
+    wpfonts.harfbuzz_subset = None
+
+    # Seconds since the 1904 Mac epoch for 2026-01-01 00:00:00 UTC.
+    fixed_int = 2082844800 + 1767225600
+    original_clean = wpfonts.Font.clean
+
+    def clean_and_pin(self, to_unicode, hinting):
+        """Run clean(), then pin dates. clean() may re-save the font after
+        subsetting (variable-font instantiation), so this must be the last
+        font-touching step to truly be deterministic."""
+        original_clean(self, to_unicode, hinting)
+        font = TTFont(io.BytesIO(self.file_content), fontNumber=self.index)
+        head = font["head"]
+        head.created = fixed_int
+        head.modified = fixed_int
+        font.recalcTimestamp = False
+        buffer = io.BytesIO()
+        font.save(buffer)
+        self.file_content = buffer.getvalue()
+
+    wpfonts.Font.clean = clean_and_pin
 
 ROOT = pathlib.Path(__file__).resolve().parent
 SRC_DIR = ROOT / "src"
@@ -55,6 +92,7 @@ def main() -> int:
     )
     args = parser.parse_args()
     out_dir = pathlib.Path(args.out)
+    _make_fonts_deterministic()
 
     if not out_dir.exists():
         out_dir.mkdir(parents=True)

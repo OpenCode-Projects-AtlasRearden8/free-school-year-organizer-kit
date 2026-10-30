@@ -43,8 +43,13 @@ Build options: `--out DIR` to write elsewhere, `--skip-verify` to skip checks.
   (valid `%PDF` header, pypdf-parseable, real extractable text, expected sheet
   title present, unbranded, no external URI links, no secret-like strings)
 - PDF page counts sane: sheets 5 and 8 are 2 pages by design, the rest are 1
-- Test suite: 12/12 passed (`python3 tests/test_build.py` and
-  `python3 -m unittest discover tests` both OK)
+- `python3 tests/test_build.py` → 13 tests: sources complete (no branding, no
+  external links, parent guide on every sheet), builds run end-to-end into a
+  temp dir, every PDF valid & unbranded, LICENSE/README present and exact,
+  repo free of secret-like strings — all pass; also passes via
+  `python3 -m unittest discover tests`
+- Builds are byte-reproducible: `build.py` pins embedded-font timestamps, and
+  `git status` stays clean after a rebuild (abstractable fonts + test enforce it)
 - No CJK/garbled characters in sources or rendered text (regex-checked)
 - Confirmed house rules: no network calls at build or in output, no branding in
   `printables/`, no secrets, license copyright line exact
@@ -57,4 +62,4 @@ Build options: `--out DIR` to write elsewhere, `--skip-verify` to skip checks.
 - No Spanish-language versions (a natural kit v2: translated sheets)
 - Fill-in text fields are for handwriting only; no interactive PDF form fields yet
 - WeasyPrint is the only supported engine (Chrome/puppeteer path not provided)
-- Not git-initialized anywhere remote — repo is local-only by design; nothing pushed or published
+- Repo is local-only by design: nothing pushed, no remote, nothing published
