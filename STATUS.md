@@ -49,7 +49,7 @@ Build options: `--out DIR` to write elsewhere, `--skip-verify` to skip checks.
   repo free of secret-like strings — all pass; also passes via
   `python3 -m unittest discover tests`
 - Builds are byte-reproducible: `build.py` pins embedded-font timestamps, and
-  `git status` stays clean after a rebuild (abstractable fonts + test enforce it)
+  `git status` stays clean after a rebuild (deterministic font embedding + a test enforce it)
 - No CJK/garbled characters in sources or rendered text (regex-checked)
 - Confirmed house rules: no network calls at build or in output, no branding in
   `printables/`, no secrets, license copyright line exact
